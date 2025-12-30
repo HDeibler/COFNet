@@ -1,0 +1,14 @@
+names:
+- Plane
+- WildLife
+- meteorite
+nc: 3
+roboflow:
+  license: Private
+  project: skywatch4
+  url: https://app.roboflow.com/sky-orxqi/skywatch4/2
+  version: 2
+  workspace: sky-orxqi
+test: ../test/images
+train: ../train/images
+val: ../valid/images
