@@ -124,7 +124,9 @@ checkpoints/
 wandb/
 
 # Data (should be downloaded separately)
-data/
+# Note: /data/ matches root data dir only, not src/data/
+/data/
+dataset/
 
 # IDE
 .idea/
