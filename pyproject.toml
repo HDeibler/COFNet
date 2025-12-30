@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cofnet"
+version = "0.1.0"
+description = "Continuous Object Field Network for small object detection"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [
+    {name = "COFNet Authors"},
+]
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+keywords = ["object detection", "deep learning", "computer vision", "mamba", "diffusion"]
+dependencies = [
+    "torch>=2.0.0",
+    "torchvision>=0.15.0",
+    "timm>=0.9.0",
+    "einops>=0.6.0",
+    "pycocotools>=2.0.0",
+    "opencv-python>=4.8.0",
+    "albumentations>=1.3.0",
+    "pyyaml>=6.0",
+    "omegaconf>=2.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "ruff>=0.0.280",
+]
+wandb = [
+    "wandb>=0.15.0",
+]
+mamba = [
+    "mamba-ssm>=1.0.0",
+    "causal-conv1d>=1.0.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/username/cofnet"
+Repository = "https://github.com/username/cofnet"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "F", "W", "I", "N", "UP"]
+ignore = ["E501"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]

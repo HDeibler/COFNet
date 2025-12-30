@@ -1,0 +1,73 @@
+# COFNet Base Configuration
+# ========================
+# Default settings for COFNet training
+
+# Model Architecture
+model:
+  num_classes: 80  # COCO default
+  backbone_dims: [96, 192, 384, 768]
+  csf_dim: 256
+  num_queries: 300
+  diffusion_steps_train: 1000
+  diffusion_steps_infer: 8
+  scale_encoder: fourier  # fourier or siren
+
+# Training
+training:
+  epochs: 100
+  batch_size: 8
+  lr: 0.0001
+  weight_decay: 0.0001
+  warmup_epochs: 5
+  use_amp: true
+  gradient_clip: 1.0
+
+# Optimizer
+optimizer:
+  type: AdamW
+  betas: [0.9, 0.999]
+
+# Scheduler
+scheduler:
+  type: CosineAnnealingLR
+  T_max: 100
+  eta_min: 0.000001
+
+# Data
+data:
+  train_img_folder: ./dataset/images/train
+  train_ann_file: ./dataset/annotations/instances_train.json
+  val_img_folder: ./dataset/images/val
+  val_ann_file: ./dataset/annotations/instances_val.json
+  image_size: [1280, 1280]
+  num_workers: 4
+
+# Augmentation
+augmentation:
+  mosaic: true
+  mixup: true
+  random_flip: 0.5
+  color_jitter: 0.4
+
+# Loss weights
+loss:
+  diffusion_weight: 1.0
+  classification_weight: 1.0
+  box_l1_weight: 5.0
+  giou_weight: 2.0
+
+# Evaluation
+eval:
+  conf_threshold: 0.05
+  nms_threshold: 0.5
+  max_detections: 300
+
+# Logging
+logging:
+  log_interval: 50
+  save_interval: 5
+  wandb_project: cofnet
+  wandb_entity: null  # Set to your username
+
+# Output
+output_dir: ./output/cofnet_base

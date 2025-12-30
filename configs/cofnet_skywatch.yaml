@@ -1,0 +1,66 @@
+# COFNet SkyWatch Configuration
+# =============================
+# Configuration for SkyWatch dataset (small objects in night sky)
+
+# Inherit from base
+__base__: ./cofnet_base.yaml
+
+# Model Architecture
+model:
+  num_classes: 3  # Plane, WildLife, meteorite
+  # Use larger backbone for small objects
+  backbone_dims: [96, 192, 384, 768]
+  csf_dim: 256
+  num_queries: 300
+  diffusion_steps_infer: 8
+
+# Training - adjusted for SkyWatch
+training:
+  epochs: 100
+  batch_size: 8  # Limited by 1280x1280 resolution
+  lr: 0.0001
+  warmup_epochs: 5
+  use_amp: true
+
+# Data - SkyWatch specific paths
+data:
+  train_img_folder: ./dataset/images/train
+  train_ann_file: ./dataset/annotations/instances_train.json
+  val_img_folder: ./dataset/images/val
+  val_ann_file: ./dataset/annotations/instances_val.json
+  # High resolution for small object detection
+  image_size: [1280, 1280]
+  num_workers: 4
+
+# Class-balanced sampling for rare meteorite class
+sampling:
+  class_balance: true
+  class_weights:
+    Plane: 1.0
+    WildLife: 1.0
+    meteorite: 5.0  # Oversample rare class
+
+# Loss - adjusted for class imbalance
+loss:
+  focal_loss: true
+  focal_alpha: 0.25
+  focal_gamma: 2.0
+  diffusion_weight: 1.0
+  classification_weight: 2.0  # Higher weight for classification
+  box_l1_weight: 5.0
+  giou_weight: 2.0
+
+# Evaluation
+eval:
+  conf_threshold: 0.15  # Lower threshold for rare classes
+  nms_threshold: 0.5
+  max_detections: 100  # Fewer expected objects in sky
+
+# Output
+output_dir: ./output/cofnet_skywatch
+
+# Notes:
+# - SkyWatch has extreme class imbalance (meteorite: 54 samples vs ~800 for others)
+# - Use focal loss + class-balanced sampling
+# - High resolution (1280x1280) critical for small objects
+# - Consider SSL pretraining on unlabeled sky video
